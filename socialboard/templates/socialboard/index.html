@@ -1,0 +1,75 @@
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Billboard</title>
+    <link href="https://fonts.googleapis.com/css?family=Anton|Pinyon+Script|Poiret+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'socialboard/css/styles.css' %}">
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script src="{% static 'socialboard/js/sb.js' %}"></script>
+</head>
+
+<body>
+    <div class="main">
+        <h1>Billboard</h1>
+
+        {% block content %}
+
+        {% if user.is_authenticated %}
+
+        <div id="user">
+            {{ user }}
+            <button><a href="{% url 'logout' %}">Logout</a></button>
+        </div>
+        {% if posts %}
+
+        {% for p in posts %}
+        <div class="blogpost">
+            <div class="date"> {{p.publish_date}}</div>
+            <div class="title">{{p.title}}</div>
+            <div class="content">{{p.content}}</div>
+            <div class="author">{{p.author}}</div>
+        </div>
+
+        {% endfor %}
+
+        {% else %}
+
+        <div id="no-posts">No messages! Click the '+' button to add a new message</div>
+
+
+        {% endif %}
+
+
+        <div class="button-border" id="plus">
+            <button><i class="fa fa-plus"></i></button>
+        </div>
+
+
+        <div id="input-form">
+            <div class="postdate" id="date"></div>
+            <form action="/newpost" method="post">
+                {% csrf_token %}
+                <input type="text" name="title" id="title" placeholder="Title">
+                <textarea name="content" id="content" placeholder="Your message here"></textarea>
+                <input type="text" name="author" id="author" placeholder="Author">
+        </div>
+        <div class="button-border" id="input-form-buttons">
+            <button id="close"><i class="fa fa-times"></i></button>
+            <button type="submit" value="submit" id="check"><i class="fa fa-check"></i></button>
+        </div>
+        </form>
+
+
+
+        {% endif %}
+
+        {% endblock %}
+    </div>
+    <script src="{% static 'SocialBoard/js/app.js' %}"></script>
+
+</body>
+
+</html>
